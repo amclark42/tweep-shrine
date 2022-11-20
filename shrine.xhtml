@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+  <head>
+    <title>The (Twitter) Friends We Made Along the Way</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!--  CSS  -->
+    <style>
+      body {
+        margin: 0;
+        font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      }
+      body > div {
+        display: flex;
+        flex-direction: row;
+      }
+      .sidebar {
+        flex: 1 1 25%;
+      }
+      main {
+        border: thin gray;
+        border-style: none solid;
+        display: flex;
+        flex: 2 1 50%;
+        flex-direction: column;
+      }
+      #me, main > section { 
+        padding: 0 1rem; 
+      }
+      h2 { margin: 1rem 0 0; }
+      aside {
+        flex: 1 1 25%;
+      }
+      header {
+        background-color: white;
+        border-bottom: thin solid gray;
+        position: -webkit-sticky;
+        position: sticky;
+        top: 0px;
+        z-index: 99;
+      }
+      #list-nav {
+        align-content: baseline;
+        align-items: stretch;
+        display: flex;
+        flex-direction: row;
+        text-align: center;
+      }
+      #list-nav a {
+        flex: 1 1 50%;
+        padding: 1rem;
+      }
+      #list-nav a:hover {
+        background-color: rgba(231, 233, 234, 0.5);
+      }
+      .user {
+        padding: 0.9rem 0;
+      }
+      .user-about {
+        display: flex;
+        flex-direction: row;
+      }
+      .user-icon {
+        flex: 0 0 48px;
+        margin-right: 0.9rem;
+      }
+      .user-icon a {
+        display: inline-block;
+        height: 48px;
+        width: 48px;
+      }
+      .user-profile {
+        
+      }
+      .user-name {
+        font-size: 1.15rem;
+        font-weight: 700;
+      }
+      .user-handle {
+        display: block;
+        font-size: 1rem;
+        font-weight: normal;
+      }
+      .pinned-tweet {
+        
+      }
+    </style>
+    <!--  Javascript  -->
+    <script type="text/javascript" src="https://d3js.org/d3.v5.min.js"></script>
+    <script src="following.js"/>
+    <script src="followers.js"/>
+  </head>
+  <body>
+    <div>
+      <div class="sidebar">
+        
+      </div>
+      <main>
+        <header>
+          <div id="me">
+            <h2>Ash Clark (e/em/eir)</h2>
+            <span>@probablefutures</span>
+          </div>
+          <nav id="list-nav">
+            <a>Followers</a>
+            <a href="#following">Following</a>
+          </nav>
+        </header>
+        <section aria-labelledby="following">
+          <h1 id="following">Following</h1>
+          <div id="list-following" aria-label="Timeline: following">
+            
+          </div>
+        </section>
+      </main>
+      <aside>
+        
+      </aside>
+    </div>
+    <script>
+      const generateHtml = function(plaintext, entities) {
+        if ( entities !== undefined ) {
+          let htmlStr = plaintext;
+          
+        }
+      };
+      //console.log(following);
+      //console.log(followers);
+      let tweepList = d3.select('#list-following');
+      let tweeps = tweepList.selectAll('div')
+        .data(following)
+        .join('div')
+          .classed('user', true);
+      // Set up areas for each user.
+      //tweeps.append('div');
+      // User info
+      tweeps.selectAll('div')
+        .data(d => d)
+        .join('div');
+      let tweepsAbout = tweeps.selectAll('div:first-child')
+          .classed('user-about', true);
+      let tweepsPinned = tweeps.selectAll('div:nth-child(2)')
+          .classed('pinned-tweet', true)
+          .text(d => d === null ? '' : d.text);
+      // User info > Icon
+      tweepsAbout.call( function(selection) {
+          selection.append('div')
+              .classed('user-icon', true)
+            .append('a')
+              .attr('href', d => 'https://twitter.com/'+d.username)
+              .attr('aria-hidden', 'true')
+              .attr('tabindex', '-1')
+            .append('img')
+              .attr('src', d => 'profile_picture/'+d.username+'.jpg')
+              .attr('alt', '')
+              .attr('draggable', 'true');
+        })
+        // User info > Profile
+        .call( function(selection) {
+          let profile = selection.append('div')
+              .classed('user-profile', true);
+          profile.append('a')
+              .classed('user-name', true)
+              .attr('href', d => 'https://twitter.com/'+d.username)
+              .text(d => d.name+" ")
+            .append('span')
+              .classed('user-handle', true)
+              .text(d => '@'+d.username);
+          profile.append('p')
+              .classed('user-desc', true)
+              .text(d => d.description);
+        });
+      // Pinned tweet, if available
+      //tweepsPinned.append('div')
+          
+    </script>
+  </body>
+</html>
