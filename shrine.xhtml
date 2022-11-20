@@ -24,6 +24,7 @@
         display: flex;
         flex: 2 1 50%;
         flex-direction: column;
+        min-height: 100vh;
       }
       #me, main > section { 
         padding: 0 1rem; 
@@ -90,6 +91,21 @@
     <script type="text/javascript" src="https://d3js.org/d3.v5.min.js"></script>
     <script src="following.js"/>
     <script src="followers.js"/>
+    <script>
+      /* Try to load data from the JS files referenced above. If they don't exist or 
+        don't set the expected variables, fall back by using a null value. */
+      let followersData, followingData;
+      try {
+        followersData = followers;
+      } catch {
+        followersData = null;
+      }
+      try {
+        followingData = following;
+      } catch {
+        followingData = null;
+      }
+    </script>
   </head>
   <body>
     <div>
@@ -124,56 +140,63 @@
           let htmlStr = plaintext;
           
         }
-      };
-      //console.log(following);
-      //console.log(followers);
-      let tweepList = d3.select('#list-following');
-      let tweeps = tweepList.selectAll('div')
-        .data(following)
-        .join('div')
-          .classed('user', true);
-      // Set up areas for each user.
-      //tweeps.append('div');
-      // User info
-      tweeps.selectAll('div')
-        .data(d => d)
-        .join('div');
-      let tweepsAbout = tweeps.selectAll('div:first-child')
-          .classed('user-about', true);
-      let tweepsPinned = tweeps.selectAll('div:nth-child(2)')
-          .classed('pinned-tweet', true)
-          .text(d => d === null ? '' : d.text);
-      // User info > Icon
-      tweepsAbout.call( function(selection) {
-          selection.append('div')
-              .classed('user-icon', true)
-            .append('a')
-              .attr('href', d => 'https://twitter.com/'+d.username)
-              .attr('aria-hidden', 'true')
-              .attr('tabindex', '-1')
-            .append('img')
-              .attr('src', d => 'profile_picture/'+d.username+'.jpg')
-              .attr('alt', '')
-              .attr('draggable', 'true');
-        })
-        // User info > Profile
-        .call( function(selection) {
-          let profile = selection.append('div')
-              .classed('user-profile', true);
-          profile.append('a')
-              .classed('user-name', true)
-              .attr('href', d => 'https://twitter.com/'+d.username)
-              .text(d => d.name+" ")
-            .append('span')
-              .classed('user-handle', true)
-              .text(d => '@'+d.username);
-          profile.append('p')
-              .classed('user-desc', true)
-              .text(d => d.description);
-        });
-      // Pinned tweet, if available
-      //tweepsPinned.append('div')
-          
+      }; // END generateHtml()
+      const listUsers = function(tweepList, data) {
+        if ( data === null ) {
+          tweepList.append('p')
+              .classed('warn', true)
+              .text('No data');
+          return;
+        }
+        let tweeps = tweepList.selectAll('div')
+          .data(data)
+          .join('div')
+            .classed('user', true);
+        // Set up areas for each user.
+        // User info
+        tweeps.selectAll('div')
+          .data(d => d)
+          .join('div');
+        let tweepsAbout = tweeps.selectAll('div:first-child')
+            .classed('user-about', true);
+        let tweepsPinned = tweeps.selectAll('div:nth-child(2)')
+            .classed('pinned-tweet', true)
+            .text(d => d === null ? '' : d.text);
+        // User info > Icon
+        tweepsAbout.call( function(selection) {
+            selection.append('div')
+                .classed('user-icon', true)
+              .append('a')
+                .attr('href', d => 'https://twitter.com/'+d.username)
+                .attr('aria-hidden', 'true')
+                .attr('tabindex', '-1')
+                .attr('target', '_blank')
+              .append('img')
+                .attr('src', d => 'profile_picture/'+d.username+'.jpg')
+                .attr('alt', '')
+                .attr('draggable', 'true');
+          })
+          // User info > Profile
+          .call( function(selection) {
+            let profile = selection.append('div')
+                .classed('user-profile', true);
+            profile.append('a')
+                .classed('user-name', true)
+                .attr('href', d => 'https://twitter.com/'+d.username)
+                .attr('target', '_blank')
+                .text(d => d.name+" ")
+              .append('span')
+                .classed('user-handle', true)
+                .text(d => '@'+d.username);
+            profile.append('p')
+                .classed('user-desc', true)
+                .text(d => d.description);
+          });
+        // Pinned tweet, if available
+        //tweepsPinned.append('div')
+      }; // END listUsers()
+      // Set up list of people I'm following.
+      listUsers(d3.select('#list-following'), followingData);
     </script>
   </body>
 </html>
