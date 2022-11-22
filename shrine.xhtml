@@ -74,9 +74,10 @@
       .user-profile {
         
       }
-      .user-name {
+      h2.user-name {
         font-size: 1.15rem;
         font-weight: 700;
+        margin-top: 0;
       }
       .user-handle {
         display: block;
@@ -84,9 +85,23 @@
         font-weight: normal;
       }
       .pinned-tweet {
-        
+        margin-left: 4rem;
+      }
+      .pinned-tweet h3 {
+        color: gray;
+        font-size: 0.925rem;
+        margin: 0 0 0.5rem;
+      }
+      .pinned-tweet h3 svg {
+        fill: gray;
+        height: 0.8rem;
+        width: 0.8rem;
+      }
+      .pinned-tweet .content {
+        margin: 0 1rem 0.5rem 1.25rem;
       }
     </style>
+    
     <!--  Javascript  -->
     <script type="text/javascript" src="https://d3js.org/d3.v5.min.js"></script>
     <script src="following.js"/>
@@ -134,13 +149,44 @@
         
       </aside>
     </div>
+    <div style="display: none;">
+      <!-- SVG icons -->
+      <div id="pin">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true">
+          <g><path d="M7 4.5C7 3.12 8.12 2 9.5 2h5C15.88 2 17 3.12 17 4.5v5.26L20.12 16H13v5l-1 2-1-2v-5H3.88L7 9.76V4.5z"></path></g>
+        </svg>
+      </div>
+    </div>
     <script>
+      /* Gather SVG icons for programmatic reuse. */
+      const icons = {
+          'pin': document.getElementById('pin').children[0].outerHTML
+        };
+      
+      /*  */
       const generateHtml = function(plaintext, entities) {
         if ( entities !== undefined ) {
           let htmlStr = plaintext;
           
         }
       }; // END generateHtml()
+      
+      /* If the current user has a pinned tweet, display it. */
+      const pinTweet = function(data) {
+        if ( data !== null ) {
+          let tweetEl = d3.select(this)
+              .classed('pinned-tweet', true);
+          tweetEl.append('h3')
+              .html( function() {
+                return icons.pin + " Pinned Tweet";
+              });
+          tweetEl.append('div')
+              .classed('content', true)
+              .text(d => d.text);
+        }
+      }; // END pinTweet()
+      
+      /* For the given user list, generate HTML for each person's data. */
       const listUsers = function(tweepList, data) {
         if ( data === null ) {
           tweepList.append('p')
@@ -160,8 +206,7 @@
         let tweepsAbout = tweeps.selectAll('div:first-child')
             .classed('user-about', true);
         let tweepsPinned = tweeps.selectAll('div:nth-child(2)')
-            .classed('pinned-tweet', true)
-            .text(d => d === null ? '' : d.text);
+            .each(pinTweet);
         // User info > Icon
         tweepsAbout.call( function(selection) {
             selection.append('div')
@@ -180,8 +225,9 @@
           .call( function(selection) {
             let profile = selection.append('div')
                 .classed('user-profile', true);
-            profile.append('a')
+            profile.append('h2')
                 .classed('user-name', true)
+              .append('a')
                 .attr('href', d => 'https://twitter.com/'+d.username)
                 .attr('target', '_blank')
                 .text(d => d.name+" ")
@@ -192,10 +238,10 @@
                 .classed('user-desc', true)
                 .text(d => d.description);
           });
-        // Pinned tweet, if available
-        //tweepsPinned.append('div')
       }; // END listUsers()
-      // Set up list of people I'm following.
+    </script>
+    <script>
+      /* Use the functions above to generate user lists. */
       listUsers(d3.select('#list-following'), followingData);
     </script>
   </body>
