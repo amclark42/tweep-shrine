@@ -1,6 +1,5 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<html lang="en">
   <head>
     <title>The (Twitter) Friends We Made Along the Way</title>
     <meta charset="utf-8" />
@@ -104,8 +103,8 @@
     
     <!--  Javascript  -->
     <script type="text/javascript" src="https://d3js.org/d3.v5.min.js"></script>
-    <script src="following.js"/>
-    <script src="followers.js"/>
+    <script src="following.js"></script>
+    <script src="followers.js"></script>
     <script>
       /* Try to load data from the JS files referenced above. If they don't exist or 
         don't set the expected variables, fall back by using a null value. */
@@ -165,10 +164,67 @@
       
       /*  */
       const generateHtml = function(plaintext, entities) {
-        if ( entities !== undefined ) {
-          let htmlStr = plaintext;
-          
+        let htmlStr = '';
+        let strIndices = [];
+        if ( entities === undefined ) {
+          htmlStr = plaintext;
+        } else {
+          // Process all the links first.
+          for (const type in entities) {
+            // Skip annotations
+            if ( type !== 'annotations' ) {
+              // Links are constructed differently depending on the entity type.
+              let getUrl, getText;
+              switch (type) {
+                case 'urls':
+                  getUrl = (o => o.expanded_url);
+                  getText = (o => o.display_url);
+                  break;
+                case 'hashtags':
+                  getUrl = (o => 'https://twitter.com/hashtag/'+o.tag);
+                  getText = (o => '#'+o.tag);
+                  break;
+                case 'mentions':
+                  getUrl = (o => 'https://twitter.com/'+o.username);
+                  getText = (o => '@'+o.username);
+                  break;
+                default:
+                  console.log(type);
+              }
+              /* For each entity object of this type, note its string indices and generate 
+                the link. */
+              for (const obj of entities[type] ) {
+                let strDesc = { 'start': obj.start, 'end': obj.end };
+                strDesc.html = 
+                  `<a href="${getUrl(obj)}" target="_blank">${getText(obj)}</a>`;
+                strIndices.push(strDesc);
+              }
+            }
+          }
+          // Sort the array of link entities so they appear in order of appearance.
+          strIndices.sort((v, u) => v.start - u.start);
+          /* The substring() function will mangle emoji, so instead we create an array of 
+            all characters within the string, and use its indices when replacing 
+            plaintext with functional links. */
+          let characters = Array.from(plaintext),
+            arrIndex = 0, strIndex = 0;
+          // Replace newlines with HTML breaks.
+          characters.forEach(
+            (char, i) => characters[i] = char.match(/\n/) ? "<br />" : char );
+          for (const obj of strIndices) {
+            if ( obj.start > strIndex ) {
+              htmlStr += characters.slice(strIndex, obj.start - 1).join('');
+            }
+            htmlStr += " " + obj.html;
+            strIndex = obj.end;
+            arrIndex++;
+          }
+          if ( strIndex !== characters.length - 1 ) {
+            htmlStr += characters.slice(strIndex).join('');
+          }
         }
+        //console.log(htmlStr);
+        return htmlStr;
       }; // END generateHtml()
       
       /* If the current user has a pinned tweet, display it. */
@@ -182,7 +238,7 @@
               });
           tweetEl.append('div')
               .classed('content', true)
-              .text(d => d.text);
+              .html(d => generateHtml(d.text, d.entities));
         }
       }; // END pinTweet()
       
@@ -205,8 +261,7 @@
           .join('div');
         let tweepsAbout = tweeps.selectAll('div:first-child')
             .classed('user-about', true);
-        let tweepsPinned = tweeps.selectAll('div:nth-child(2)')
-            .each(pinTweet);
+        let tweepsPinned = tweeps.selectAll('div:nth-child(2)');
         // User info > Icon
         tweepsAbout.call( function(selection) {
             selection.append('div')
@@ -238,6 +293,7 @@
                 .classed('user-desc', true)
                 .text(d => d.description);
           });
+        tweepsPinned.each(pinTweet);
       }; // END listUsers()
     </script>
     <script>
