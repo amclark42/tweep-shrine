@@ -14,7 +14,7 @@
   6. Back on the tracker site, click “start”.
   7. When prompted, save the zip file to your computer.
 2. Extract everything from the zip file. (On many operating systems, double-clicking or “opening” the zip file will start the extraction process.)
-3. Save [this HTML file](./shrine.html) into the same directory as your extracted data.
+3. Save [this HTML file](https://raw.githubusercontent.com/amclark42/tweep-shrine/main/shrine.html) into the same directory as your extracted data.
 4. Prepare the list of *your followers*:
   1. Use a text editor (<strong>not</strong> Microsoft Word) to open the file “followers.json”.
   2. Before the first bracket, paste this: <pre><code>const followers = </code></pre>
