@@ -138,6 +138,12 @@
     <script src="following.js"></script>
     <script src="followers.js"></script>
     <script>
+      /* When to show the "How to" guide in the sidebar. Can be set to "always", 
+        "never", or "sometimes". If "sometimes" is chosen, the guide will only be 
+        shown if data is missing. */
+      const showHowTo = "sometimes";
+    </script>
+    <script>
       /* Try to load data from the JS files referenced above. If they don't exist or 
         don't set the expected variables, fall back by using a null value. */
       let followersData, followingData;
@@ -262,6 +268,10 @@
       </div>
     </div>
     <script>
+      if ( showHowTo === 'always' ) {
+        d3.select('#how-to')
+            .style('display', null);
+      }
       /* Gather SVG icons for programmatic reuse. */
       const icons = {
           'pin': document.getElementById('pin').children[0].outerHTML,
@@ -360,13 +370,18 @@
         const setSectionId = function (d, i) {
           return listId+'-u'+i;
         };
-        // If there is no user data for this list, display instructions.
-        if ( data === null ) {
+        // If there is no user data for this list, say so and exit the function.
+        if ( data === null && showHowTo === 'never' ) {
+          tweepList.append('p')
+              .text("No data found!");
+          return;
+        } else if ( data === null ) {
+          // If the "How to" guide is able to be shown, link to it.
           d3.select('#how-to')
               .style('display', null);
           tweepList.append('p')
-              .classed('warn', true)
-              .html(`No data found! Check out the <a href="#how-to-${listId}">instructions for loading this list</a>.`);
+              .html(`No data found! Check out the 
+                <a href="#how-to-${listId}">instructions for loading this list</a>.`);
           return;
         }
         let tweeps = tweepList.selectAll('section')
