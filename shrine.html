@@ -270,15 +270,20 @@
       
       /* For the given user list, generate HTML for each person's data. */
       const listUsers = function(tweepList, data) {
+        const listId = tweepList.attr('id');
+        const setSectionId = function (d, i) {
+          return listId+'-u'+i;
+        };
         if ( data === null ) {
           tweepList.append('p')
               .classed('warn', true)
               .text('No data');
           return;
         }
-        let tweeps = tweepList.selectAll('div')
+        let tweeps = tweepList.selectAll('section')
           .data(data)
-          .join('div')
+          .join('section')
+            .attr('aria-labelledby', setSectionId)
             .classed('user', true);
         // Set up areas for each user.
         // User info
@@ -307,6 +312,7 @@
             let profile = selection.append('div')
                 .classed('user-profile', true);
             profile.append('h3')
+                //.attr('id', setSectionId)
                 .classed('user-name', true)
               .append('a')
                 .attr('href', d => 'https://twitter.com/'+d.username)
@@ -320,6 +326,16 @@
                 .html(d => generateHtml(d.description, 
                   d.entities === undefined ? undefined : d.entities.description));
           });
+        /* Add identifiers to user name headings in each section, so they can serve 
+          as ARIA labels. Since the user's index is dependent on their place in the 
+          list, the ID has to be generated using data at the "tweeps" level rather 
+          than at the "tweepsAbout" level. */
+        tweeps.each( function(d, i) {
+          let uId = setSectionId(d, i);
+          d3.select(this)
+            .select('.user-name')
+              .attr('id', uId);
+        });
         tweepsPinned.each(pinTweet);
       }; // END listUsers()
     </script>
