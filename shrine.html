@@ -84,7 +84,10 @@
         font-weight: normal;
       }
       .pinned-tweet {
+        border: thin solid gray;
+        border-radius: 0.5rem;
         margin-left: 4rem;
+        padding: 0.85rem 1rem 0.5rem;
       }
       .pinned-tweet .heading {
         color: gray;
@@ -124,14 +127,20 @@
             <h1>Maybe the Real Twitter Was the Friends We Made Along the Way</h1>
           </div>
           <nav id="list-nav">
-            <a>Followers</a>
+            <a href="#followers">Followers</a>
             <a href="#following">Following</a>
           </nav>
         </header>
+        <section aria-labelledby="followers">
+          <h2 id="followers">Followers</h2>
+          <div id="list-followers" aria-label="Timeline: followers">
+            <!-- Javascript below will fill in follower users' info here. -->
+          </div>
+        </section>
         <section aria-labelledby="following">
           <h2 id="following">Following</h2>
           <div id="list-following" aria-label="Timeline: following">
-            
+            <!-- Javascript below will fill in following users' info here. -->
           </div>
         </section>
       </main>
@@ -139,11 +148,36 @@
         
       </aside>
     </div>
+    <!-- SVG icons -->
     <div style="display: none;">
-      <!-- SVG icons -->
       <div id="pin">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true">
+        <svg xmlns="http://www.w3.org/2000/svg" 
+           viewBox="0 0 24 24" aria-hidden="true">
           <g><path d="M7 4.5C7 3.12 8.12 2 9.5 2h5C15.88 2 17 3.12 17 4.5v5.26L20.12 16H13v5l-1 2-1-2v-5H3.88L7 9.76V4.5z"></path></g>
+        </svg>
+      </div>
+      <div id="lock">
+        <svg xmlns="http://www.w3.org/2000/svg" 
+           viewBox="0 0 24 24" aria-label="Protected account" role="img">
+          <g><path d="M17.5 7H17v-.25c0-2.76-2.24-5-5-5s-5 2.24-5 5V7h-.5C5.12 7 4 8.12 4 9.5v9C4 19.88 5.12 21 6.5 21h11c1.39 0 2.5-1.12 2.5-2.5v-9C20 8.12 18.89 7 17.5 7zM13 14.73V17h-2v-2.27c-.59-.34-1-.99-1-1.73 0-1.1.9-2 2-2 1.11 0 2 .9 2 2 0 .74-.4 1.39-1 1.73zM15 7H9v-.25c0-1.66 1.35-3 3-3 1.66 0 3 1.34 3 3V7z"></path></g>
+        </svg>
+      </div>
+      <div id="location">
+        <svg xmlns="http://www.w3.org/2000/svg" 
+           viewBox="0 0 24 24" aria-hidden="true">
+          <g><path d="M12 7c-1.93 0-3.5 1.57-3.5 3.5S10.07 14 12 14s3.5-1.57 3.5-3.5S13.93 7 12 7zm0 5c-.827 0-1.5-.673-1.5-1.5S11.173 9 12 9s1.5.673 1.5 1.5S12.827 12 12 12zm0-10c-4.687 0-8.5 3.813-8.5 8.5 0 5.967 7.621 11.116 7.945 11.332l.555.37.555-.37c.324-.216 7.945-5.365 7.945-11.332C20.5 5.813 16.687 2 12 2zm0 17.77c-1.665-1.241-6.5-5.196-6.5-9.27C5.5 6.916 8.416 4 12 4s6.5 2.916 6.5 6.5c0 4.073-4.835 8.028-6.5 9.27z"></path></g>
+        </svg>
+      </div>
+      <div id="link">
+        <svg xmlns="http://www.w3.org/2000/svg" 
+           viewBox="0 0 24 24" aria-hidden="true">
+          <g><path d="M18.36 5.64c-1.95-1.96-5.11-1.96-7.07 0L9.88 7.05 8.46 5.64l1.42-1.42c2.73-2.73 7.16-2.73 9.9 0 2.73 2.74 2.73 7.17 0 9.9l-1.42 1.42-1.41-1.42 1.41-1.41c1.96-1.96 1.96-5.12 0-7.07zm-2.12 3.53l-7.07 7.07-1.41-1.41 7.07-7.07 1.41 1.41zm-12.02.71l1.42-1.42 1.41 1.42-1.41 1.41c-1.96 1.96-1.96 5.12 0 7.07 1.95 1.96 5.11 1.96 7.07 0l1.41-1.41 1.42 1.41-1.42 1.42c-2.73 2.73-7.16 2.73-9.9 0-2.73-2.74-2.73-7.17 0-9.9z"></path></g>
+        </svg>
+      </div>
+      <div id="calendar">
+        <svg xmlns="http://www.w3.org/2000/svg" 
+           viewBox="0 0 24 24" aria-hidden="true">
+          <g><path d="M7 4V3h2v1h6V3h2v1h1.5C19.89 4 21 5.12 21 6.5v12c0 1.38-1.11 2.5-2.5 2.5h-13C4.12 21 3 19.88 3 18.5v-12C3 5.12 4.12 4 5.5 4H7zm0 2H5.5c-.27 0-.5.22-.5.5v12c0 .28.23.5.5.5h13c.28 0 .5-.22.5-.5v-12c0-.28-.22-.5-.5-.5H17v1h-2V6H9v1H7V6zm0 6h2v-2H7v2zm0 4h2v-2H7v2zm4-4h2v-2h-2v2zm0 4h2v-2h-2v2zm4-4h2v-2h-2v2z"></path></g>
         </svg>
       </div>
     </div>
@@ -291,6 +325,7 @@
     </script>
     <script>
       /* Use the functions above to generate user lists. */
+      listUsers(d3.select('#list-followers'), followersData);
       listUsers(d3.select('#list-following'), followingData);
     </script>
   </body>
