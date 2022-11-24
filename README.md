@@ -2,9 +2,7 @@
 
 > Maybe the real Twitter was the friends we met along the way.
 
-The archive that Twitter provided me was okay for my own tweets, but for my friends and followers? The user data they provide is wholly dependent on the Twitter servers being up, the user accounts being public (not locked against guests) and not deleted.
-
-I was not ready to leave Twitter. I found myself mourning not my own tweets (which Twitter was only too happy to give me), but the *people* I met on the site. I wanted to know how to reach them. I wanted to preserve a small snippet of what my social circle looked like. So I built off the awesome [unflwrs](https://github.com/Syfaro/unflwrs) service that @Syfaro created, and created a standalone HTML file which displays every user profile and pinned tweet.
+I was not ready to leave Twitter. I found myself mourning not my own tweets (which Twitter was only too happy to give me), but the *people* I met on the site. I wanted to know how to reach them. I wanted to preserve a small snippet of what my social circle looked like. So I built off the awesome [unflwrs](https://github.com/Syfaro/unflwrs) service that [@Syfaro](https://github.com/Syfaro) created, and created a standalone HTML file which displays every user profile and pinned tweet.
 
 I share this “shrine” with y’all in the hopes that it provides some solace to you as well.
 
