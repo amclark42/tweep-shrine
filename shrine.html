@@ -102,7 +102,7 @@
     </style>
     
     <!--  Javascript  -->
-    <script type="text/javascript" src="https://d3js.org/d3.v5.min.js"></script>
+    <script src="https://d3js.org/d3.v5.min.js"></script>
     <script src="following.js"></script>
     <script src="followers.js"></script>
     <script>
@@ -291,7 +291,8 @@
                 .text(d => '@'+d.username);
             profile.append('p')
                 .classed('user-desc', true)
-                .text(d => d.description);
+                .html(d => generateHtml(d.description, 
+                  d.entities === undefined ? undefined : d.entities.description));
           });
         tweepsPinned.each(pinTweet);
       }; // END listUsers()
