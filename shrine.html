@@ -22,6 +22,23 @@
       .sidebar {
         flex: 1 1 25%;
       }
+      #how-to {
+        margin-bottom: 75vh;
+        padding: 1.25rem 1rem 1rem;
+      }
+      #how-to ol {
+        padding-left: 1.15rem;
+      }
+      #how-to li {
+        margin-top: 1.25rem;
+      }
+      #how-to ol ol {
+        list-style-type: lower-alpha;
+        padding-left: 1.5rem;
+      }
+      #how-to ol ol li {
+        margin-top: 0.75rem;
+      }
       main {
         border: thin gray;
         border-style: none solid;
@@ -131,7 +148,58 @@
   <body>
     <div>
       <div class="sidebar">
-        
+        <!-- Instructions on how to get data for the Javascript to load. Hidden 
+          unless the data is missing. -->
+        <aside id="how-to" style="display:none;">
+          <h2>How to load your tweeps</h2>
+          <ol>
+            <li>Get your data!
+              <ol>
+                <li>Visit the <a href="https://unflwrs.syfaro.com/" 
+                  target="_blank">unflwrs Twitter follower tracker</a> (opens in a 
+                  new tab).</li>
+                <li>Select the option to “download profile pictures”.</li>
+                <li>Select the option to “export json instead of csv”.</li>
+                <li>Click the button “friends &amp; followers export”.</li>
+                <li>Twitter will ask if you want to authorize the application to 
+                  access your data. Click “Authorize app”.</li>
+                <li>Back on the tracker site, click “start”.</li>
+                <li>When prompted, save the zip file to your computer.</li>
+              </ol>
+            </li>
+            <li>Extract everything from the zip file. (On many operating systems, 
+              double-clicking or “opening” the zip file will start the extraction 
+              process.)</li>
+            <li>Save this HTML file into the same directory as your extracted data.</li>
+            <li id="how-to-list-followers">Prepare the list of <em>your followers</em>:
+              <ol>
+                <li>Use a text editor (<strong>not</strong> Microsoft Word) to open 
+                  the file “followers.json”.</li>
+                <li>Before the first bracket, paste this: 
+                  <pre><code>const followers = </code></pre></li>
+                <li>In your editor’s File menu, select “Save As...”</li>
+                <li>Save the copy to the same directory, with the name 
+                  “followers.js”. Make sure the editor doesn't try to tack “.json” 
+                  on at the end.</li>
+              </ol>
+            </li>
+            <li id="how-to-list-following">Prepare the list of <em>users you 
+               follow</em>:
+              <ol>
+                <li>Use a text editor (<strong>not</strong> Microsoft Word) to open 
+                  the file “following.json”.</li>
+                <li>Before the first bracket, paste this: 
+                  <pre><code>const following = </code></pre></li>
+                <li>In your editor’s File menu, select “Save As...”</li>
+                <li>Save the copy to the same directory, with the name 
+                  “following.js”. Make sure the editor doesn’t try to tack “.json” 
+                  on at the end.</li>
+              </ol>
+            </li>
+            <li>Open this HTML file in your browser! This list will be hidden if the 
+              expected data is available.</li>
+          </ol>
+        </aside>
       </div>
       <main>
         <header>
@@ -292,10 +360,13 @@
         const setSectionId = function (d, i) {
           return listId+'-u'+i;
         };
+        // If there is no user data for this list, display instructions.
         if ( data === null ) {
+          d3.select('#how-to')
+              .style('display', null);
           tweepList.append('p')
               .classed('warn', true)
-              .text('No data');
+              .html(`No data found! Check out the <a href="#how-to-${listId}">instructions for loading this list</a>.`);
           return;
         }
         let tweeps = tweepList.selectAll('section')
