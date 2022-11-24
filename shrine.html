@@ -25,7 +25,7 @@
         flex-direction: column;
         min-height: 100vh;
       }
-      #me, main > section { 
+      #header, main > section { 
         padding: 0 1rem; 
       }
       h2 { margin: 1rem 0 0; }
@@ -73,7 +73,7 @@
       .user-profile {
         
       }
-      h2.user-name {
+      .user-name {
         font-size: 1.15rem;
         font-weight: 700;
         margin-top: 0;
@@ -86,12 +86,12 @@
       .pinned-tweet {
         margin-left: 4rem;
       }
-      .pinned-tweet h3 {
+      .pinned-tweet .heading {
         color: gray;
         font-size: 0.925rem;
         margin: 0 0 0.5rem;
       }
-      .pinned-tweet h3 svg {
+      .pinned-tweet .heading svg {
         fill: gray;
         height: 0.8rem;
         width: 0.8rem;
@@ -109,16 +109,8 @@
       /* Try to load data from the JS files referenced above. If they don't exist or 
         don't set the expected variables, fall back by using a null value. */
       let followersData, followingData;
-      try {
-        followersData = followers;
-      } catch {
-        followersData = null;
-      }
-      try {
-        followingData = following;
-      } catch {
-        followingData = null;
-      }
+      try { followersData = followers; } catch { followersData = null; }
+      try { followingData = following; } catch { followingData = null; }
     </script>
   </head>
   <body>
@@ -128,9 +120,8 @@
       </div>
       <main>
         <header>
-          <div id="me">
-            <h2>Ash Clark (e/em/eir)</h2>
-            <span>@probablefutures</span>
+          <div id="header">
+            <h1>Maybe the Real Twitter Was the Friends We Made Along the Way</h1>
           </div>
           <nav id="list-nav">
             <a>Followers</a>
@@ -138,7 +129,7 @@
           </nav>
         </header>
         <section aria-labelledby="following">
-          <h1 id="following">Following</h1>
+          <h2 id="following">Following</h2>
           <div id="list-following" aria-label="Timeline: following">
             
           </div>
@@ -232,7 +223,8 @@
         if ( data !== null ) {
           let tweetEl = d3.select(this)
               .classed('pinned-tweet', true);
-          tweetEl.append('h3')
+          tweetEl.append('h4')
+              .classed('heading', true)
               .html( function() {
                 return icons.pin + " Pinned Tweet";
               });
@@ -280,7 +272,7 @@
           .call( function(selection) {
             let profile = selection.append('div')
                 .classed('user-profile', true);
-            profile.append('h2')
+            profile.append('h3')
                 .classed('user-name', true)
               .append('a')
                 .attr('href', d => 'https://twitter.com/'+d.username)
