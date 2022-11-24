@@ -4,11 +4,15 @@
 
 The archive that Twitter provided me was okay for my own tweets, but for my friends and followers? The user data they provide is wholly dependent on the Twitter servers being up, the user accounts being public (not locked against guests) and not deleted.
 
-I was not ready to leave Twitter. I found myself mourning not my own tweets (which Twitter was only too happy to give me), but the people I met on the site. I wanted to know how to reach them. I wanted to preserve a small snippet of what my social circle looked like. So I built off the awesome [unflwrs](https://github.com/Syfaro/unflwrs) service that @Syfaro created, and created a standalone HTML file which displays every user profile and pinned tweet.
+I was not ready to leave Twitter. I found myself mourning not my own tweets (which Twitter was only too happy to give me), but the *people* I met on the site. I wanted to know how to reach them. I wanted to preserve a small snippet of what my social circle looked like. So I built off the awesome [unflwrs](https://github.com/Syfaro/unflwrs) service that @Syfaro created, and created a standalone HTML file which displays every user profile and pinned tweet.
 
-This HTML page will dynamically create user lists from the tweeps data that `unflwrs` has helpfully archived for you. The result looks like this:
+I share this “shrine” with y’all in the hopes that it provides some solace to you as well.
+
+The shrine is an HTML page will dynamically create user lists from the tweeps data that `unflwrs` has helpfully archived for you. The result looks like this:
 
 ![A list of Twitter users, which includes the user's location, website, and pinned tweet](pics/loaded-page2.png "Loaded HTML page")
+
+**Important:** You are free to download, edit, modify, whatever to the shrine HTML. I ask only that you do **not** use it to publish your tweeps’ data online. Keep it for your own records; open it and smile at the memories, or sigh at what was lost. But *please* allow your friends and followers control over their own online presence. **Don’t publish their info.**
 
 
 ## How to load your tweeps
