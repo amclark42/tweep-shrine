@@ -14,6 +14,11 @@
         display: flex;
         flex-direction: row;
       }
+      svg {
+        fill: gray;
+        height: 1.125rem;
+        width: 1.125rem;
+      }
       .sidebar {
         flex: 1 1 25%;
       }
@@ -79,15 +84,22 @@
         font-weight: 700;
         margin-top: 0;
       }
+      .user-name a { display: block; }
       .user-handle {
         display: block;
         font-size: 0.9rem;
         font-weight: normal;
       }
+      .user-metadata {
+        align-items: baseline;
+        display: flex;
+        gap: 1.25rem;
+      }
       .pinned-tweet {
         border: thin solid gray;
         border-radius: 0.5rem;
         margin-left: 4rem;
+        margin-top: 1rem;
         padding: 0.85rem 1rem 0.5rem;
       }
       .pinned-tweet .heading {
@@ -96,9 +108,8 @@
         margin: 0 0 0.5rem;
       }
       .pinned-tweet .heading svg {
-        fill: gray;
-        height: 0.8rem;
-        width: 0.8rem;
+        height: 0.825rem;
+        width: 0.825rem;
       }
       .pinned-tweet .content {
         margin: 0 1rem 0.5rem 1.25rem;
@@ -185,10 +196,15 @@
     <script>
       /* Gather SVG icons for programmatic reuse. */
       const icons = {
-          'pin': document.getElementById('pin').children[0].outerHTML
+          'pin': document.getElementById('pin').children[0].outerHTML,
+          'lock': document.getElementById('lock').children[0].outerHTML,
+          'location': document.getElementById('location').children[0].outerHTML,
+          'link': document.getElementById('link').children[0].outerHTML,
+          'calendar': document.getElementById('calendar').children[0].outerHTML
         };
       
-      /*  */
+      /* Generate a string of HTML, given a plaintext string and an object of 
+        complex entities (link fodder). */
       const generateHtml = function(plaintext, entities) {
         let htmlStr = '';
         let strIndices = [];
@@ -272,6 +288,7 @@
       /* For the given user list, generate HTML for each person's data. */
       const listUsers = function(tweepList, data) {
         const listId = tweepList.attr('id');
+        // Function to generate an ID for a user section heading.
         const setSectionId = function (d, i) {
           return listId+'-u'+i;
         };
@@ -309,8 +326,8 @@
                 .attr('draggable', 'true');
           })
           // User info > Profile
-          .call( function(selection) {
-            let profile = selection.append('div')
+          .each( function(p) {
+            let profile = d3.select(this).append('div')
                 .classed('user-profile', true);
             profile.append('h3')
                 //.attr('id', setSectionId)
@@ -322,10 +339,39 @@
               .append('span')
                 .classed('user-handle', true)
                 .text(d => '@'+d.username);
+            // User description
             profile.append('p')
                 .classed('user-desc', true)
                 .html(d => generateHtml(d.description, 
                   d.entities === undefined ? undefined : d.entities.description));
+            // User metadata
+            let metadata = profile.append('div')
+                .classed('user-metadata', true);
+            // Optional location
+            if ( p.location !== undefined ) {
+              metadata.append('span')
+                  .classed('user-location', true)
+                  .html(d => d.location === undefined ? '' : 
+                    icons.location + " " + d.location);
+            }
+            // Optional website URL
+            if ( p.entities !== undefined && p.entities.url !== undefined ) {
+              metadata.append('span')
+                  .classed('user-link', true)
+                  .html( function(d) {
+                    if ( d.entities !== undefined && d.entities.url !== undefined ) {
+                      const urlObj = d.entities.url.urls[0];
+                      return icons.link + " " +
+                        `<a href="${urlObj.expanded_url}" 
+                          target="_blank">${urlObj.display_url}</a>`;
+                    }
+                  });
+            }
+            // Twitter join date
+            metadata.append('span')
+                .classed('user-joined', true)
+                .html(d => icons.calendar + " Joined Twitter in "
+                  + d.created_at.substring(0, 4));
           });
         /* Add identifiers to user name headings in each section, so they can serve 
           as ARIA labels. Since the user's index is dependent on their place in the 
