@@ -110,6 +110,12 @@
         font-size: 0.9rem;
         font-weight: normal;
       }
+      .user-protecc svg {
+        height: 1rem;
+        margin: 0 0.15rem;
+        position: absolute;
+        width: 1rem;
+      }
       .user-metadata {
         align-items: baseline;
         display: flex;
@@ -447,7 +453,10 @@ THIS SOFTWARE.
                 .text(d => d.name+" ")
               .append('span')
                 .classed('user-handle', true)
-                .text(d => '@'+d.username);
+                .text(d => '@'+d.username+" ")
+              .append('span')
+                .classed('user-protecc', true)
+                .html(d => d.protected ? icons.lock : '');
             // User description
             profile.append('p')
                 .classed('user-desc', true)
