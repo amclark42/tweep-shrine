@@ -6,9 +6,26 @@ I was not ready to leave Twitter. I found myself mourning not my own tweets (whi
 
 I share this “shrine” with y’all in the hopes that it provides some solace to you as well.
 
-The shrine is an HTML page will dynamically create user lists from the tweeps data that `unflwrs` has helpfully archived for you. The result looks like this:
+The shrine is an HTML page will dynamically create user lists from the tweeps data that `unflwrs` has helpfully archived for you. For each friend or follower, you’ll see:
+
+* their profile pic,
+* their name,
+* their Twitter handle,
+* if their tweets are protected,
+* their user description,
+* their set location (if provided),
+* their website (if provided),
+* the year they joined Twitter, and
+* their pinned tweet (if provided).
+
+The result looks like this:
+
+![SUE the T. rex. "That's Specimen FMNH PR 2081 to you. they/them." Location, website, and pinned tweet are also shown](pics/SUE.png "SUE the T. rex")
 
 ![A list of Twitter users, which includes the user's location, website, and pinned tweet](pics/loaded-page2.png "Loaded HTML page")
+
+
+## A note on privacy
 
 **Important:** You are free to download, edit, modify, whatever to the shrine HTML. I ask only that you do **not** use it to publish your tweeps’ data online. Keep it for your own records; open it and smile at the memories, or sigh at what was lost. But *please* allow your friends and followers control over their own online presence. **Don’t publish their info.**
 
