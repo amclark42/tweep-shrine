@@ -20,7 +20,7 @@ The shrine is an HTML page will dynamically create user lists from the tweeps da
 
 The result looks like this:
 
-![SUE the T. rex. "That's Specimen FMNH PR 2081 to you. they/them." Location, website, and pinned tweet are also shown](pics/SUE.png "SUE the T. rex")
+![SUE the T. rex. "That's Specimen FMNH PR 2081 to you. they/them." Location, website, and pinned tweet are also shown](pics/SUEtheTrex.png "SUE the T. rex")
 
 ![A list of Twitter users, which includes the user's location, website, and pinned tweet](pics/loaded-page2.png "Loaded HTML page")
 
