@@ -140,6 +140,13 @@
       .pinned-tweet .content {
         margin: 0 1rem 0.5rem 1.25rem;
       }
+      .pinned-tweet-link {
+        font-size: 0.9rem;
+        text-align: right;
+      }
+      a + a {
+        margin-left: 0.25rem;
+      }
     </style>
     
     <!--  Javascript  -->
@@ -383,12 +390,15 @@ THIS SOFTWARE.
               .classed('pinned-tweet', true);
           tweetEl.append('h4')
               .classed('heading', true)
-              .html( function() {
-                return icons.pin + " Pinned Tweet";
-              });
+              .html(`${icons.pin} Pinned Tweet`);
           tweetEl.append('div')
               .classed('content', true)
               .html(d => generateHtml(d.text, d.entities));
+          tweetEl.append('div')
+              .classed('pinned-tweet-link', true)
+            .append('a')
+              .attr('target', '_blank')
+              .text("View tweet");
         }
       }; // END pinTweet()
       
@@ -502,6 +512,12 @@ THIS SOFTWARE.
               .attr('id', uId);
         });
         tweepsPinned.each(pinTweet);
+        tweeps.each( function(d, i) {
+          let url = 'https://twitter.com/'+d[0].username+'/status/'+d[0].pinned_tweet_id;
+          d3.select(this)
+            .select('.pinned-tweet-link a')
+              .attr('href', url);
+        });
       }; // END listUsers()
     </script>
     <script>
